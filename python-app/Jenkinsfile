@@ -1,0 +1,17 @@
+pipeline {
+    agent any
+    environment{
+        IMAGE_NAME = "ctissera/python-app"
+        DOCKERHUB_CREDS = credentials('dockerhub')
+        RepoDockerHub = 'asruiz1235'
+        NameContainer = 'python-app'
+    }
+
+    stages {
+        stage('Build image') {
+            steps {
+                sh 'docker build -t ${IMAGE_NAME}:${BUILD_NUMBER} ./python-app'
+            }
+        }
+    }
+}
