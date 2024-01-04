@@ -3,7 +3,7 @@ pipeline {
     environment{
         IMAGE_NAME = "ctissera/python-app"
         DOCKERHUB_CREDS = credentials('dockerhub')
-        RepoDockerHub = 'asruiz1235'
+        RepoDockerHub = 'ctissera'
         NameContainer = 'python-app'
     }
 
@@ -13,5 +13,13 @@ pipeline {
                 sh 'docker build -t ${IMAGE_NAME}:${BUILD_NUMBER} ./python-app'
             }
         }
-    }
+
+        stage("Docker push"){
+            steps{
+                sh 'echo ${DOCKERHUB_CREDS_PSW} | docker login -u ${DOCKERHUB_CREDS_USR} --password-stdin'
+                sh 'docker push ${IMAGE_NAME}:${BUILD_NUMBER}'
+            }
+        }
+
+    }    
 }
